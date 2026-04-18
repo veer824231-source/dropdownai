@@ -1,240 +1,553 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VELOCITY-X | PREMIUM GEAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
 
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlZFRVIgRVhQTE9SRVIiLAogICJzaG9ydF9uYW1lIjogIlZFRVItWCIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzAyMDYxNyIsCiAgInRoZW1lX2NvbG9yIjogIiM2MzY2ZjEiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8xMzg0LzEzODQwNjAucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+
+    <title>VEER EXPLORER | The Ultimate Quantum Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #cfff00;
-            --accent: #ff0055;
-            --bg: #ffffff;
-            --text: #000000;
-            --gray: #f4f4f4;
-            --border-width: 3px;
+        :root { 
+            --bg: #020617; 
+            --text-main: #e2e8f0; 
+            --card: rgba(30, 41, 59, 0.4); 
+            --border: rgba(99, 102, 241, 0.15); 
+            --nav-bg: rgba(2, 6, 23, 0.8);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
-
-        /* Navigation */
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: white; border-bottom: var(--border-width) solid var(--text);
-        }
-        .logo { font-weight: 900; font-size: 1.8rem; text-transform: uppercase; letter-spacing: -2px; }
-
-        .search-container { flex-grow: 1; margin: 0 30px; max-width: 400px; }
-        #search-input {
-            width: 100%; padding: 10px 15px; border: 2px solid var(--text);
-            font-weight: 700; text-transform: uppercase; outline: none;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            background: var(--primary); padding: 20px; border-bottom: var(--border-width) solid var(--text);
-        }
-        .hero h1 { 
-            font-size: clamp(4rem, 15vw, 12rem); line-height: 0.85; 
-            font-weight: 900; letter-spacing: -5px; text-transform: uppercase;
-            overflow: hidden;
-        }
-
-        /* Marquee */
-        .marquee {
-            background: var(--text); color: white; padding: 15px 0; overflow: hidden; display: flex; white-space: nowrap;
-            border-bottom: var(--border-width) solid var(--text);
-        }
-        .marquee-content { display: flex; animation: scroll 20s linear infinite; font-weight: 900; text-transform: uppercase; font-size: 1.2rem; }
-        .marquee-content span { padding: 0 40px; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-        /* Grid */
-        .shop-header { padding: 80px 5% 40px; font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; text-transform: uppercase; }
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 0; background: var(--text); border: var(--border-width) solid var(--text);
-        }
-        .product-card {
-            background: white; padding: 40px; cursor: pointer; transition: background 0.3s ease;
-            border: 1px solid var(--text); position: relative;
-        }
-        .product-card:hover { background: var(--primary); }
-        .product-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 25px; border: var(--border-width) solid var(--text); background: var(--gray); }
-        .product-card h3 { font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
-
-        /* Detail Panel */
-        #detail-panel {
-            position: fixed; top: 0; right: -100%; width: 100%; height: 100%;
-            background: white; z-index: 2000; display: flex; flex-direction: column; 
-            overflow-y: auto; transition: right 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-        #detail-panel.active { right: 0; }
-        
-        .close-btn { 
-            align-self: flex-start; margin: 30px 0 0 30px;
-            font-weight: 900; cursor: pointer; background: var(--text);
-            color: white; padding: 12px 25px; text-transform: uppercase; border: none;
+        .light { 
+            --bg: #f8fafc; 
+            --text-main: #0f172a; 
+            --card: #ffffff; 
+            --border: rgba(0, 0, 0, 0.1); 
+            --nav-bg: rgba(248, 250, 252, 0.8);
         }
         
-        .detail-content { 
-            display: flex; flex-wrap: wrap; gap: 40px; 
-            max-width: 1200px; margin: 40px auto 120px; padding: 0 5%;
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            transition: all 0.4s ease;
+            overflow-x: hidden;
+            width: 100%;
         }
-        .detail-img { flex: 1; min-width: 300px; border: var(--border-width) solid var(--text); max-height: 60vh; object-fit: cover; }
+
+        /* --- YAHAN CURSOR CHANGE HUA HAI --- */
+        * {
+            cursor: url('cursor.png'), auto !important;
+        }
+        a, button, [role="button"], input, textarea {
+            cursor: url('cursor.png'), pointer !important;
+        }
+        /* ---------------------------------- */
+
+        .glass { background: var(--card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); }
         
-        .buy-now-container {
-            position: sticky; bottom: 0; width: 100%; 
-            background: white; border-top: var(--border-width) solid var(--text);
-            padding: 20px 5%; z-index: 2050; margin-top: auto;
-        }
-        .buy-now {
-            display: block; width: 100%; padding: 25px; 
-            background: var(--text); color: var(--primary); 
-            border: none; font-weight: 900; cursor: pointer; 
-            font-size: 1.2rem; text-transform: uppercase; 
-            text-align: center; letter-spacing: 5px;
-            position: relative; transition: all 0.5s ease;
-            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        nav.glass {
+            background: var(--nav-bg) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
         }
 
-        /* --- Mobile Responsive Updates (Added without changing original logic) --- */
-        @media (max-width: 768px) {
-            nav { padding: 10px 3%; }
-            .logo { font-size: 1.4rem; }
-            .search-container { margin: 0 10px; }
-            #search-input { padding: 8px 10px; font-size: 0.8rem; }
-            #cart-count { font-size: 0.8rem; padding: 5px 10px; }
-
-            .hero h1 { letter-spacing: -2px; }
-            
-            .grid { grid-template-columns: 1fr; } /* Single column for mobile */
-            .product-card { padding: 20px; }
-            
-            .detail-content { margin-top: 20px; gap: 20px; }
-            .detail-img { min-width: 100%; max-height: 40vh; }
-            #panel-title { font-size: 2rem !important; }
-            #panel-price { font-size: 1.8rem !important; }
-            
-            .buy-now { padding: 15px; font-size: 1rem; letter-spacing: 2px; }
-            .close-btn { margin: 20px 0 0 20px; padding: 10px 20px; }
+        .grad-text {
+            background: linear-gradient(to right, #6366f1, #22d3ee, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 3.5rem; }
-            .shop-header { padding: 40px 5% 20px; }
-        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { animation: marquee 25s linear infinite; }
+        
+        #mobile-nav { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        #mobile-nav.open { transform: translateX(0); }
+
+        .blob { position: absolute; width: 500px; height: 500px; background: rgba(99, 102, 241, 0.15); filter: blur(100px); border-radius: 50%; z-index: -1; }
+        
+        @keyframes pulse-slow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .animate-pulse-slow { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+        /* Liquid Glass Modal Transitions */
+        #contact-modal.flex { display: flex !important; opacity: 1; }
+        #modal-content { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* New Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .float-anim { animation: float 6s ease-in-out infinite; }
+
+        /* [ADDITION] Install Button Style */
+        #pwaInstallBtn { display: none; }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <nav>
-        <div class="logo">Try</div>
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="SEARCH GEAR..." onkeyup="searchProducts()">
+    <nav class="fixed top-0 w-full z-[100] glass border-b px-4 md:px-12 py-5 flex justify-between items-center">
+        <div class="text-2xl font-black italic grad-text">VEER EXPLORER_X</div>
+        
+        <div class="hidden lg:flex gap-8 font-bold text-[10px] uppercase tracking-[0.2em] opacity-70">
+            <a href="#hero" class="hover:text-indigo-400 transition">Core</a>
+            <a href="#tech" class="hover:text-indigo-400 transition">Tech</a>
+            <a href="#compare" class="hover:text-indigo-400 transition">Compare</a>
+            <a href="#roadmap" class="hover:text-indigo-400 transition">Roadmap</a>
+            <a href="#pricing" class="hover:text-indigo-400 transition">Plans</a>
         </div>
-        <div id="cart-count" style="font-weight: 900; border: 2px solid black; padding: 5px 15px;">BAG (0)</div>
+
+        <div class="flex items-center gap-4">
+            <button id="pwaInstallBtn" class="bg-indigo-600/20 border border-indigo-500/50 px-4 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all">
+                Install App
+            </button>
+            <button onclick="document.documentElement.classList.toggle('light')" class="p-2 rounded-xl glass">🌓</button>
+            <a href="be.apk" download class="hidden sm:flex bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest items-center gap-2 border border-white/10 transition">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Get APK
+            </a>
+            <button class="hidden sm:block bg-indigo-600 px-6 py-2 rounded-full font-bold text-xs text-white">Console</button>
+            <button onclick="toggleMenu()" class="lg:hidden text-2xl">☰</button>
+        </div>
     </nav>
 
-    <div id="detail-panel">
-        <button class="close-btn" onclick="closePanel()">CLOSE</button>
-        <div class="detail-content">
-            <img src="" id="panel-img" class="detail-img">
-            <div class="detail-info">
-                <h2 id="panel-title" style="font-size: 3rem; font-weight: 900; text-transform: uppercase;"></h2>
-                <p id="panel-desc" style="margin-top: 20px; line-height: 1.6; color: #555;"></p>
-                <div id="panel-price" style="font-size: 2.5rem; font-weight: 900; margin-top: 20px;"></div>
-            </div>
-        </div>
-        <div class="buy-now-container">
-            <button id="dynamic-buy-btn" class="buy-now">Buy Now — Checkout</button>
+    <div id="mobile-nav" class="fixed inset-0 z-[110] glass flex flex-col p-10 lg:hidden">
+        <button onclick="toggleMenu()" class="self-end text-4xl mb-12">×</button>
+        <div class="flex flex-col gap-10 text-3xl font-extrabold tracking-tighter">
+            <a href="#hero" onclick="toggleMenu()">Home</a>
+            <a href="#tech" onclick="toggleMenu()">Capabilities</a>
+            <a href="#compare" onclick="toggleMenu()">Comparison</a>
+            <a href="#pricing" onclick="toggleMenu()">Pricing</a>
         </div>
     </div>
 
-    <section class="hero">
-        <h1 class="reveal">LIMITLESS<br>VELOCITY.</h1>
+    <section id="hero" class="relative pt-60 pb-32 px-6 text-center overflow-hidden">
+        <div class="blob -top-20 -left-20"></div>
+        <div class="blob bottom-0 right-0" style="background: rgba(34, 211, 238, 0.1);"></div>
+        
+        <div class="mx-auto mb-8 w-fit px-4 py-1 glass rounded-full text-[10px] font-bold tracking-widest text-indigo-400 uppercase border-indigo-500/30">
+            Engineered for the 1%
+        </div>
+        <h1 class="text-6xl md:text-[140px] font-black tracking-tighter leading-[0.8] mb-12">
+            LIMITLESS <br> <span class="grad-text">POWER.</span>
+        </h1>
+        <p class="max-w-2xl mx-auto text-lg md:text-2xl opacity-50 mb-12 leading-relaxed">
+            The first cloud OS designed for neural-sync execution. Deploy globally in 200ms with zero configuration overhead.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-6">
+            <button class="bg-indigo-600 px-12 py-5 rounded-3xl font-black text-xl text-white hover:shadow-2xl hover:shadow-indigo-500/40 transition">Start Building</button>
+            <a href="be.apk" download class="glass px-12 py-5 rounded-3xl font-black text-xl border-white/10 hover:border-indigo-500 transition flex items-center justify-center gap-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download APK
+            </a>
+            <button class="glass px-12 py-5 rounded-3xl font-black text-xl border-white/10 hover:border-indigo-500 transition">Read Docs</button>
+        </div>
     </section>
 
-    <div class="marquee">
-        <div class="marquee-content">
-            <span>2026 EDITION</span><span>GLOBAL SHIPPING</span><span>PREMIUM QUALITY</span><span>FAST DELIVERY</span>
+    <div class="py-16 glass border-y border-white/5 overflow-hidden">
+        <div class="flex animate-marquee whitespace-nowrap gap-24 items-center">
+            <span class="text-3xl font-black opacity-10">GOOGLE</span>
+            <span class="text-3xl font-black opacity-10">META</span>
+            <span class="text-3xl font-black opacity-10">AMAZON</span>
+            <span class="text-3xl font-black opacity-10">OPENAI</span>
+            <span class="text-3xl font-black opacity-10">APPLE</span>
+            <span class="text-3xl font-black opacity-10">TESLA</span>
+            <span class="text-3xl font-black opacity-10">NETFLIX</span>
+            <span class="text-3xl font-black opacity-10">GOOGLE</span>
+            <span class="text-3xl font-black opacity-10">META</span>
+            <span class="text-3xl font-black opacity-10">AMAZON</span>
+            <span class="text-3xl font-black opacity-10">OPENAI</span>
+            <span class="text-3xl font-black opacity-10">APPLE</span>
+            <span class="text-3xl font-black opacity-10">TESLA</span>
+            <span class="text-3xl font-black opacity-10">NETFLIX</span>
         </div>
     </div>
 
-    <h2 class="shop-header">The Catalog</h2>
-    <div class="grid" id="product-grid"></div>
+    <section class="py-40 px-6 max-w-7xl mx-auto overflow-hidden">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+            <div class="relative">
+                <div class="glass p-8 rounded-[40px] border-cyan-500/20 float-anim">
+                    <div class="flex justify-between items-end mb-8">
+                        <div class="h-32 w-4 bg-indigo-500/40 rounded-full"></div>
+                        <div class="h-48 w-4 bg-cyan-500/40 rounded-full"></div>
+                        <div class="h-24 w-4 bg-purple-500/40 rounded-full"></div>
+                        <div class="h-56 w-4 bg-indigo-500 rounded-full shadow-[0_0_20px_rgba(99,102,241,0.5)]"></div>
+                        <div class="h-40 w-4 bg-cyan-500/40 rounded-full"></div>
+                        <div class="h-32 w-4 bg-purple-500/40 rounded-full"></div>
+                    </div>
+                    <div class="text-xs font-bold tracking-[0.3em] opacity-40 uppercase">Real-time Load Balancing</div>
+                </div>
+                <div class="absolute -top-10 -right-10 glass p-6 rounded-3xl border-indigo-500/30 backdrop-blur-3xl">
+                    <div class="text-2xl font-black">99.8%</div>
+                    <div class="text-[8px] font-bold opacity-50 uppercase tracking-widest">Efficiency</div>
+                </div>
+            </div>
+            <div>
+                <h2 class="text-4xl md:text-7xl font-black mb-8 leading-none tracking-tighter">DATA <br><span class="text-indigo-500">VISUALIZED.</span></h2>
+                <p class="opacity-50 text-lg mb-10">Your infrastructure is no longer a black box. Monitor every packet, every sync, and every node with Veer's proprietary Neural-Dashboard.</p>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-4 font-bold text-sm opacity-80"><span class="w-2 h-2 bg-indigo-500 rounded-full"></span> Predictive Traffic Modeling</li>
+                    <li class="flex items-center gap-4 font-bold text-sm opacity-80"><span class="w-2 h-2 bg-cyan-400 rounded-full"></span> Packet-Loss Self Healing</li>
+                    <li class="flex items-center gap-4 font-bold text-sm opacity-80"><span class="w-2 h-2 bg-purple-500 rounded-full"></span> Quantum-Safe Encryption Logs</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech" class="py-40 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl md:text-8xl font-black tracking-tighter mb-24 text-center">CORE <span class="text-indigo-500">ENGINE.</span></h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="glass p-10 rounded-[40px] hover:-translate-y-4 transition-transform duration-500">
+                <div class="text-5xl mb-8 text-indigo-500 font-black">01</div>
+                <h4 class="text-2xl font-black mb-4">Neural Routing</h4>
+                <p class="opacity-50 text-sm">Our AI predicts traffic spikes and moves your data to the edge before the user even arrives.</p>
+            </div>
+            <div class="glass p-10 rounded-[40px] border-indigo-500/40 bg-indigo-500/5 hover:-translate-y-4 transition-transform duration-500">
+                <div class="text-5xl mb-8 text-cyan-400 font-black">02</div>
+                <h4 class="text-2xl font-black mb-4">Atomic Sync</h4>
+                <p class="opacity-50 text-sm">Push code and see it live globally in under 200ms. No queues, no waiting, just pure speed.</p>
+            </div>
+            <div class="glass p-10 rounded-[40px] hover:-translate-y-4 transition-transform duration-500">
+                <div class="text-5xl mb-8 text-purple-500 font-black">03</div>
+                <h4 class="text-2xl font-black mb-4">Zero Trust</h4>
+                <p class="opacity-50 text-sm">Every packet is encrypted at the hardware level. Security isn't a feature; it's the foundation.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-40 px-6 bg-white/[0.02] border-y border-white/5">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-6xl font-black mb-20 tracking-tighter">GLOBAL <span class="grad-text">DOMINANCE.</span></h2>
+            <div class="relative inline-block w-full max-w-5xl aspect-video glass rounded-[60px] p-10 overflow-hidden group">
+                <svg class="w-full h-full opacity-20" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="150" r="3" fill="#6366f1" class="animate-pulse" />
+                    <circle cx="400" cy="200" r="3" fill="#22d3ee" class="animate-pulse" />
+                    <circle cx="600" cy="100" r="3" fill="#a855f7" class="animate-pulse" />
+                    <path d="M200 150 Q400 50 600 100" stroke="white" stroke-dasharray="5 5" opacity="0.2" />
+                    <path d="M400 200 Q300 150 200 150" stroke="white" stroke-dasharray="5 5" opacity="0.2" />
+                </svg>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-8xl font-black mb-4">200+</div>
+                        <div class="text-xl font-bold opacity-40 tracking-[0.5em] uppercase">Edge Locations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-40 px-6 max-w-7xl mx-auto bg-indigo-600/5 rounded-[60px] border border-white/5 mt-20">
+        <div class="grid md:grid-cols-2 gap-20 items-center">
+            <div>
+                <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">BEATING THE <span class="text-cyan-400">LAWS OF PHYSICS.</span></h2>
+                <p class="opacity-60 mb-12 text-lg">We don't just host websites; we optimize the entire execution path from server to browser.</p>
+                <div class="space-y-8">
+                    <div>
+                        <div class="flex justify-between mb-2 font-bold text-xs uppercase tracking-widest">Veer Explorer_X Speed</div>
+                        <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="w-[98%] h-full bg-gradient-to-r from-indigo-500 to-cyan-400"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2 font-bold text-xs uppercase tracking-widest">Industry Standard</div>
+                        <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="w-[45%] h-full bg-white/40"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="glass p-12 rounded-[50px] transform rotate-3 hover:rotate-0 transition-transform duration-700">
+                    <div class="text-7xl font-black mb-4 grad-text">99.99%</div>
+                    <p class="font-bold text-xl uppercase tracking-tighter opacity-40">Uptime Guaranteed</p>
+                </div>
+                <div class="absolute -bottom-10 -left-10 glass p-8 rounded-[40px] border-indigo-500/50 -rotate-6 hidden md:block">
+                    <div class="text-3xl font-black">2ms Latency</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-40 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-1">
+            <div class="glass p-12 border-white/5">
+                <h5 class="text-[10px] font-black tracking-widest opacity-40 mb-6 uppercase">CPU Arch</h5>
+                <p class="text-2xl font-bold">ARM64 Neoverse</p>
+            </div>
+            <div class="glass p-12 border-white/5">
+                <h5 class="text-[10px] font-black tracking-widest opacity-40 mb-6 uppercase">Storage</h5>
+                <p class="text-2xl font-bold">NVMe Gen5</p>
+            </div>
+            <div class="glass p-12 border-white/5">
+                <h5 class="text-[10px] font-black tracking-widest opacity-40 mb-6 uppercase">Network</h5>
+                <p class="text-2xl font-bold">400Gbps Mesh</p>
+            </div>
+            <div class="glass p-12 border-white/5">
+                <h5 class="text-[10px] font-black tracking-widest opacity-40 mb-6 uppercase">Memory</h5>
+                <p class="text-2xl font-bold">LPDDR5x</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="py-40 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl md:text-8xl font-black tracking-tighter mb-24 text-center">QUANTUM <span class="text-purple-500">PLANS.</span></h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="glass p-10 rounded-[40px] border-white/5 flex flex-col justify-between">
+                <div>
+                    <h4 class="text-xl font-bold mb-2">NEBULA</h4>
+                    <div class="text-4xl font-black mb-6">$0<span class="text-sm opacity-40">/mo</span></div>
+                    <ul class="space-y-4 mb-8 opacity-60 text-sm">
+                        <li>• 5GB Neural Storage</li>
+                        <li>• Standard Latency</li>
+                        <li>• Public Community Support</li>
+                    </ul>
+                </div>
+                <button class="w-full py-4 glass rounded-2xl font-bold hover:bg-white/10 transition">Initialize Free</button>
+            </div>
+            <div class="glass p-10 rounded-[40px] border-indigo-500/50 bg-indigo-500/10 scale-105 relative z-10 flex flex-col justify-between">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">Most Popular</div>
+                <div>
+                    <h4 class="text-xl font-bold mb-2">QUASAR</h4>
+                    <div class="text-4xl font-black mb-6">$49<span class="text-sm opacity-40">/mo</span></div>
+                    <ul class="space-y-4 mb-8 text-sm">
+                        <li>• Unlimited Edge Nodes</li>
+                        <li>• 2ms Global Latency</li>
+                        <li>• Priority Neural Sync</li>
+                        <li>• 24/7 AI Support</li>
+                    </ul>
+                </div>
+                <button class="w-full py-4 bg-indigo-600 rounded-2xl font-bold text-white shadow-xl shadow-indigo-500/20">Upgrade Now</button>
+            </div>
+            <div class="glass p-10 rounded-[40px] border-white/5 flex flex-col justify-between">
+                <div>
+                    <h4 class="text-xl font-bold mb-2">SUPERNOVA</h4>
+                    <div class="text-4xl font-black mb-6">$199<span class="text-sm opacity-40">/mo</span></div>
+                    <ul class="space-y-4 mb-8 opacity-60 text-sm">
+                        <li>• Dedicated Hardware</li>
+                        <li>• Zero-Trust Tunneling</li>
+                        <li>• Custom Neural Training</li>
+                    </ul>
+                </div>
+                <button class="w-full py-4 glass rounded-2xl font-bold hover:bg-white/10 transition">Contact Sales</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-40 px-6 max-w-4xl mx-auto">
+        <h2 class="text-4xl md:text-6xl font-black mb-20 text-center tracking-tighter">QUANTUM <span class="text-cyan-400">QUERIES.</span></h2>
+        <div class="space-y-4">
+            <details class="group glass rounded-3xl p-6 border-white/5 cursor-pointer">
+                <summary class="list-none flex justify-between items-center font-bold text-lg">
+                    How is Veer Explorer faster than Vercel?
+                    <span class="group-open:rotate-180 transition-transform">↓</span>
+                </summary>
+                <p class="pt-6 opacity-50 text-sm leading-relaxed">Unlike traditional CDNs, Veer uses Neural Sync to pre-cache data based on user behavioral patterns, reducing Time to First Byte (TTFB) to near-zero levels.</p>
+            </details>
+            <details class="group glass rounded-3xl p-6 border-white/5 cursor-pointer">
+                <summary class="list-none flex justify-between items-center font-bold text-lg">
+                    Is my data encrypted during Sync?
+                    <span class="group-open:rotate-180 transition-transform">↓</span>
+                </summary>
+                <p class="pt-6 opacity-50 text-sm leading-relaxed">Every packet is encrypted using AES-256-GCM at the hardware level before it leaves the source node, ensuring total Zero-Trust security.</p>
+            </details>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-6 mb-20">
+        <div class="glass p-6 rounded-[30px] flex flex-wrap justify-around items-center gap-6 border-cyan-500/20">
+            <div class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse-slow"></div>
+                <span class="text-[10px] font-bold tracking-widest uppercase opacity-60">System: Operational</span>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase opacity-60">
+                <span>Network: <span id="ping-val" class="text-cyan-400">14ms</span></span>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase opacity-60">
+                <span>Active Nodes: <span class="text-indigo-400">2,481</span></span>
+            </div>
+        </div>
+    </div>
+
+    <section id="compare" class="py-40 px-6 max-w-5xl mx-auto">
+        <h2 class="text-center text-4xl md:text-6xl font-black mb-20">VEER VS <span class="opacity-30">OTHERS.</span></h2>
+        <div class="glass rounded-[40px] overflow-hidden border-white/10">
+            <table class="w-full text-left">
+                <thead class="bg-white/5">
+                    <tr>
+                        <th class="p-8 font-black uppercase text-xs tracking-widest">Feature</th>
+                        <th class="p-8 font-black uppercase text-xs tracking-widest text-indigo-400">Veer Explorer</th>
+                        <th class="p-8 font-black uppercase text-xs tracking-widest opacity-30">The Rest</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    <tr class="border-b border-white/5">
+                        <td class="p-8 opacity-60">Global Edge Nodes</td>
+                        <td class="p-8 font-bold">200+ Locations</td>
+                        <td class="p-8 opacity-30">Limited</td>
+                    </tr>
+                    <tr class="border-b border-white/5">
+                        <td class="p-8 opacity-60">Deployment Speed</td>
+                        <td class="p-8 font-bold">Instant (Atomic)</td>
+                        <td class="p-8 opacity-30">2-5 Minutes</td>
+                    </tr>
+                    <tr class="border-b border-white/5">
+                        <td class="p-8 opacity-60">AI Optimization</td>
+                        <td class="p-8 font-bold text-cyan-400">Built-in</td>
+                        <td class="p-8 opacity-30">No</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="py-40 px-6 text-center overflow-hidden">
+        <h2 class="text-3xl font-black mb-16 opacity-30 uppercase tracking-[0.5em]">Works With Your Stack</h2>
+        <div class="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto">
+            <div class="px-8 py-4 glass rounded-2xl font-bold opacity-60 hover:opacity-100 transition">REACT</div>
+            <div class="px-8 py-4 glass rounded-2xl font-bold opacity-60 hover:opacity-100 transition text-indigo-400">NEXT.JS</div>
+            <div class="px-8 py-4 glass rounded-2xl font-bold opacity-60 hover:opacity-100 transition">VUE</div>
+            <div class="px-8 py-4 glass rounded-2xl font-bold opacity-60 hover:opacity-100 transition">DOCKER</div>
+            <div class="px-8 py-4 glass rounded-2xl font-bold opacity-60 hover:opacity-100 transition text-cyan-400">PYTHON</div>
+            <div class="px-8 py-4 glass rounded-2xl font-bold opacity-60 hover:opacity-100 transition">NODE.JS</div>
+            <div class="px-8 py-4 glass rounded-2xl font-bold opacity-60 hover:opacity-100 transition text-purple-400">GITHUB</div>
+        </div>
+    </section>
+
+    <section id="roadmap" class="py-40 px-6 max-w-4xl mx-auto">
+        <h2 class="text-5xl md:text-7xl font-black text-center mb-32 tracking-tighter">THE <span class="grad-text">FUTURE.</span></h2>
+        <div class="relative space-y-32">
+            <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 md:-translate-x-1/2"></div>
+            <div class="relative flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 md:pr-16 text-left md:text-right mb-8 md:mb-0 pl-12 md:pl-0">
+                    <h4 class="text-3xl font-black mb-2">Q1: Neural Sync</h4>
+                    <p class="opacity-50">Introducing predictive caching across the entire global network.</p>
+                </div>
+                <div class="absolute left-2 md:left-1/2 w-4 h-4 bg-indigo-500 rounded-full md:-translate-x-1/2 shadow-[0_0_20px_rgba(99,102,241,0.8)]"></div>
+                <div class="md:w-1/2"></div>
+            </div>
+            <div class="relative flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2"></div>
+                <div class="absolute left-2 md:left-1/2 w-4 h-4 bg-cyan-400 rounded-full md:-translate-x-1/2"></div>
+                <div class="md:w-1/2 md:pl-16 pl-12">
+                    <h4 class="text-3xl font-black mb-2">Q2: Edge SQL</h4>
+                    <p class="opacity-50">Fully distributed databases with zero-latency read/writes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button onclick="toggleContact()" class="fixed bottom-8 right-8 z-[150] w-16 h-16 bg-indigo-600 rounded-2xl shadow-2xl shadow-indigo-500/50 flex items-center justify-center hover:scale-110 active:scale-90 transition-all duration-300 group">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+        </svg>
+    </button>
+
+    <div id="contact-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 backdrop-blur-xl bg-black/40 transition-all duration-500 opacity-0">
+        <div id="modal-content" class="glass w-full max-w-lg rounded-[40px] p-10 border-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.3)] transform scale-90">
+            <button onclick="toggleContact()" class="absolute top-6 right-8 text-3xl opacity-30 hover:opacity-100">×</button>
+            <h3 class="text-3xl font-black mb-8 grad-text">SEND MESSAGE</h3>
+            <form action="https://formspree.io/f/maqpknww" method="POST" class="space-y-5">
+                <input type="text" name="name" placeholder="Your Name" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all text-indigo-400">
+                <input type="email" name="email" placeholder="Email Address" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all text-indigo-400">
+                <textarea name="message" rows="4" placeholder="How can I help you?" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all resize-none text-indigo-400"></textarea>
+                <button type="submit" class="w-full bg-indigo-600 py-5 rounded-2xl font-black text-white hover:bg-indigo-500 shadow-xl shadow-indigo-600/20 transition-all flex items-center justify-center gap-3 group">
+                    SEND DATA
+                    <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="pt-40 pb-20 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-20 mb-32">
+            <div class="col-span-2">
+                <div class="text-4xl font-black italic grad-text mb-10">VEER EXPLORER</div>
+                <p class="max-w-sm opacity-40 text-lg leading-relaxed">Building the digital infrastructure for the next billion users.</p>
+            </div>
+            <div>
+                <h5 class="font-black text-sm uppercase tracking-widest mb-10 text-indigo-400">Ecosystem</h5>
+                <ul class="space-y-6 opacity-40 font-bold text-sm">
+                    <li>Cloud Nodes</li>
+                    <li>Neural Engine</li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-black text-sm uppercase tracking-widest mb-10 text-indigo-400">Support</h5>
+                <ul class="space-y-6 opacity-40 font-bold text-sm">
+                    <li>Docs</li>
+                    <li>Status</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center opacity-20 text-[10px] tracking-[1.5em] font-black uppercase">© 2026 Veer Explorer_X</div>
+    </footer>
 
     <script>
-        const products = [
-            { id: 1, name: "Snekaer", price: "₹2200", desc: "Aerodynamic high-speed footwear.", img: "snekaer.jpg", link: "https://amzn.to/4muZs3U" },
-            { id: 2, name: "Smooth Leather Bag", price: "₹350", desc: "Gear 14 cms Blue Casual Backpack.", img: "bag.jpg", link: "https://amzn.to/4vzfUEC" },
-            { id: 3, name: "Gear 22", price: "₹500", desc: "Gear 22 ltrs Black and Royal Blue Casual Backpack.", img: "bag1.jpg", link: "https://amzn.to/4crcnzl" },
-            { id: 4, name: "EXHEART EXF-311WT Neck Strap Fan", price: "₹200", desc: "EXHEART EXF-311WT Neck Strap Fan.", img: "fan1.jpg", link: "https://amzn.to/4mv0EUW" },
-            { id: 5, name: "Neon Runner", price: "₹2500", desc: "Aerodynamic high-speed footwear.", img: "shoe.jpg", link: "https://amzn.to/4dPd340" },
-            { id: 6, name: "Noise Watch", price: "₹5200", desc: "Titanium casing with smart tracking.", img: "watch.jpg", link: "https://amzn.to/4vsNGLC" },
-            { id: 7, name: "Rgb light", price: "₹599", desc: "One94Store 5 Meter Smart RGB Neon LED Strip Lights with App & Remote", img: "light.jpg", link: "https://amzn.to/4tyjcqp" },
-            { id: 8, name: "Hand Fan", price: "₹299", desc: "The most attractive and athetic hand fan for personal use rechargable and more useful.", img: "fan.jpg", link: "https://amzn.to/4tISWZN" },
-            { id: 9, name: "Valentine Gift", price: "₹299", desc: "CraftIndia Valentine Gift for Girlfriend Boyfriend", img: "statue.jpg", link: "https://amzn.to/42a99vj" },
-            { id: 10, name: "Ram Statue", price: "₹100", desc: "The most cutest statue over earth and more atrractive.", img: "ram.jpg", link: "https://amzn.to/4vAUqas" }
-        ];
+        function toggleMenu() {
+            const nav = document.getElementById('mobile-nav');
+            nav.classList.toggle('open');
+            document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : 'auto';
+        }
 
-        function initShop(filter = "") {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = "";
-            const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+        // TOGGLE CONTACT POPUP FUNCTION
+        function toggleContact() {
+            const modal = document.getElementById('contact-modal');
+            const content = document.getElementById('modal-content');
             
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `<img src="${p.img}" onerror="this.src='https://via.placeholder.com/400'"><h3>${p.name}</h3><div>${p.price}</div>`;
-                card.onclick = () => openPanel(p);
-                grid.appendChild(card);
-            });
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.add('flex', 'opacity-100');
+                    content.style.transform = 'scale(1)';
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.remove('opacity-100');
+                content.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 500);
+                document.body.style.overflow = 'auto';
+            }
         }
 
-        function searchProducts() {
-            const term = document.getElementById('search-input').value;
-            initShop(term);
+        // Random ping generator for "Live Status" feel
+        setInterval(() => {
+            const ping = Math.floor(Math.random() * (18 - 2 + 1) + 2);
+            const pingEl = document.getElementById('ping-val');
+            if(pingEl) pingEl.innerText = ping + 'ms';
+        }, 3000);
+
+        // [ADDITION] PWA INSTALL LOGIC
+        let deferredPrompt;
+        const installBtn = document.getElementById('pwaInstallBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block'; // Show button when ready
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        // SERVICE WORKER REGISTRATION (Bina iske install button nahi dikhega)
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', e => self.skipWaiting());
+                self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
+            `;
+            const blob = new Blob([swCode], {type: 'text/javascript'});
+            navigator.serviceWorker.register(URL.createObjectURL(blob));
         }
-
-        function openPanel(p) {
-            document.getElementById('panel-img').src = p.img;
-            document.getElementById('panel-title').innerText = p.name;
-            document.getElementById('panel-desc').innerText = p.desc;
-            document.getElementById('panel-price').innerText = p.price;
-            
-            const btn = document.getElementById('dynamic-buy-btn');
-            btn.onclick = () => window.location.href = p.link;
-
-            document.getElementById('detail-panel').classList.add('active');
-            gsap.from(".detail-info > *", { opacity: 0, x: 50, stagger: 0.1, duration: 0.5 });
-        }
-
-        function closePanel() { document.getElementById('detail-panel').classList.remove('active'); }
-
-        function startAnimations() {
-            gsap.registerPlugin(ScrollTrigger);
-            gsap.from(".reveal", { 
-                y: 100, 
-                opacity: 0, 
-                duration: 1.5, 
-                ease: "power4.out" 
-            });
-        }
-
-        window.onload = () => {
-            initShop();
-            startAnimations();
-        };
     </script>
+
 </body>
 </html>
